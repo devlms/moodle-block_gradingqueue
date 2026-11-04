@@ -1,0 +1,44 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+}}
+{{!
+    @template block_gradingqueue/queue
+
+    Work waiting for grading, oldest first.
+
+    Example context (json):
+    {
+        "hasrows": true,
+        "rows": [{"url": "#", "name": "Essay 1", "coursename": "Biology", "showcourse": true,
+                  "waiting": "3 waiting", "oldest": "Waiting since 2/11/26, 09:00", "icon": ""}]
+    }
+}}
+{{#hasrows}}
+<ul class="list-unstyled mb-0 block-gradingqueue-list">
+    {{#rows}}
+    <li class="mb-2 d-flex">
+        <span class="me-2">{{{icon}}}</span>
+        <span>
+            <a href="{{url}}">{{name}}</a> <span class="badge bg-primary text-white">{{waiting}}</span>
+            <span class="d-block small text-muted">{{#showcourse}}{{coursename}} &middot; {{/showcourse}}{{oldest}}</span>
+        </span>
+    </li>
+    {{/rows}}
+</ul>
+{{/hasrows}}
+{{^hasrows}}
+<p class="mb-0">{{#str}}empty, block_gradingqueue{{/str}}</p>
+{{/hasrows}}
