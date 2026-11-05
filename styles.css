@@ -36,3 +36,8 @@
     margin: 0 0 .5rem;
     color: #357a32;
 }
+
+/* Moodle 4.5's Bootstrap 4 has no fw-bold. */
+.block_gradingqueue .block-gradingqueue-summary {
+    font-weight: 700;
+}
