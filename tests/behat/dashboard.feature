@@ -23,6 +23,7 @@ Feature: See everything waiting for grading on the Dashboard
       | assign  | user     | onlinetext |
       | Essay 1 | student1 | My answer  |
 
+  @javascript @accessibility
   Scenario: A teacher adds the block and opens the grading page from it
     Given I log in as "teacher1"
     And I turn editing mode on
@@ -30,6 +31,8 @@ Feature: See everything waiting for grading on the Dashboard
     Then I should see "Essay 1" in the "Needs grading" "block"
     And I should see "1 waiting" in the "Needs grading" "block"
     And I should see "Biology" in the "Needs grading" "block"
+    And I should see "1 to grade" in the "Needs grading" "block"
+    And the page should meet accessibility standards
     When I click on "Essay 1" "link" in the "Needs grading" "block"
     Then I should see "Sam Student"
 

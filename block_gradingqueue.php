@@ -72,20 +72,8 @@ class block_gradingqueue extends block_base {
         }
         $courseid = $this->page->course->id != SITEID ? (int) $this->page->course->id : 0;
         $items = \block_gradingqueue\local\queue::for_user((int) $USER->id, $courseid);
-        $format = get_string('strftimedatetimeshort', 'langconfig');
-        $rows = array_map(fn($i) => [
-            'url' => $i->url,
-            'name' => $i->name,
-            'coursename' => $i->coursename,
-            'showcourse' => !$courseid,
-            'waiting' => get_string('waiting', 'block_gradingqueue', $i->count),
-            'oldest' => get_string('oldest', 'block_gradingqueue', userdate($i->oldest, $format)),
-            'icon' => $OUTPUT->pix_icon('monologo', '', $i->modname, ['class' => 'icon']),
-        ], $items);
-        $this->content->text = $OUTPUT->render_from_template(
-            'block_gradingqueue/queue',
-            ['rows' => $rows, 'hasrows' => (bool) $rows]
-        );
+        $list = new \block_gradingqueue\output\queue_list($items, !$courseid, time());
+        $this->content->text = $OUTPUT->render_from_template('block_gradingqueue/queue', $list->export_for_template($OUTPUT));
         return $this->content;
     }
 }

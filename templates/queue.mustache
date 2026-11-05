@@ -21,24 +21,33 @@
 
     Example context (json):
     {
+        "summary": "6 to grade in 2 courses",
         "hasrows": true,
-        "rows": [{"url": "#", "name": "Essay 1", "coursename": "Biology", "showcourse": true,
-                  "waiting": "3 waiting", "oldest": "Waiting since 2/11/26, 09:00", "icon": ""}]
+        "rows": [{"url": "#", "name": "Essay 1", "type": "Assignment", "coursename": "Biology", "showcourse": true,
+                  "waiting": "3 waiting", "age": "Oldest 9 days", "since": "27/10/26, 09:00", "overdue": true,
+                  "purpose": "assessment", "icon": ""}]
     }
 }}
 {{#hasrows}}
+<p class="block-gradingqueue-summary fw-bold mb-2">{{summary}}</p>
 <ul class="list-unstyled mb-0 block-gradingqueue-list">
     {{#rows}}
-    <li class="mb-2 d-flex">
-        <span class="me-2">{{{icon}}}</span>
-        <span>
-            <a href="{{url}}">{{name}}</a> <span class="badge bg-primary text-white">{{waiting}}</span>
-            <span class="d-block small text-muted">{{#showcourse}}{{coursename}} &middot; {{/showcourse}}{{oldest}}</span>
-        </span>
+    <li class="block-gradingqueue-item">
+        <div class="activityiconcontainer smaller {{purpose}} flex-shrink-0" title="{{type}}">{{{icon}}}</div>
+        <div class="block-gradingqueue-main">
+            <a href="{{url}}" class="block-gradingqueue-name">{{name}}</a>
+            <div class="small text-muted">
+                {{#showcourse}}<span>{{coursename}}</span> &middot; {{/showcourse}}<span class="{{#overdue}}block-gradingqueue-overdue{{/overdue}}" title="{{since}}">{{age}}</span>
+            </div>
+        </div>
+        <span class="badge rounded-pill bg-primary text-white block-gradingqueue-count">{{waiting}}</span>
     </li>
     {{/rows}}
 </ul>
 {{/hasrows}}
 {{^hasrows}}
-<p class="mb-0">{{#str}}empty, block_gradingqueue{{/str}}</p>
+<div class="block-gradingqueue-empty text-center text-muted py-3">
+    {{#pix}} i/checked, core {{/pix}}
+    <p class="mb-0">{{#str}}empty, block_gradingqueue{{/str}}</p>
+</div>
 {{/hasrows}}

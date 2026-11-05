@@ -25,10 +25,17 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['activity'] = 'Activity';
+$string['age:day'] = 'Oldest 1 day';
+$string['age:days'] = 'Oldest {$a} days';
+$string['age:hour'] = 'Oldest 1 hour';
+$string['age:hours'] = 'Oldest {$a} hours';
+$string['age:new'] = 'Just in';
 $string['empty'] = 'Nothing waiting for grading.';
 $string['gradingqueue:addinstance'] = 'Add a Needs grading block';
 $string['gradingqueue:myaddinstance'] = 'Add a Needs grading block to the Dashboard';
-$string['oldest'] = 'Waiting since {$a}';
+$string['overdue'] = 'Waiting a week or more';
 $string['pluginname'] = 'Needs grading';
 $string['privacy:metadata'] = 'The Needs grading block shows existing submissions and attempts. It stores no personal data.';
+$string['summary'] = '{$a} to grade';
+$string['summary:courses'] = '{$a->total} to grade in {$a->courses} courses';
 $string['waiting'] = '{$a} waiting';
