@@ -62,7 +62,7 @@ class block_gradingqueue extends block_base {
      * @return stdClass
      */
     public function get_content() {
-        global $USER, $OUTPUT;
+        global $USER;
         if ($this->content !== null) {
             return $this->content;
         }
@@ -73,7 +73,8 @@ class block_gradingqueue extends block_base {
         $courseid = $this->page->course->id != SITEID ? (int) $this->page->course->id : 0;
         $items = \block_gradingqueue\local\queue::for_user((int) $USER->id, $courseid);
         $list = new \block_gradingqueue\output\queue_list($items, !$courseid, time());
-        $this->content->text = $OUTPUT->render_from_template('block_gradingqueue/queue', $list->export_for_template($OUTPUT));
+        $renderer = $this->page->get_renderer('core');
+        $this->content->text = $renderer->render_from_template('block_gradingqueue/queue', $list->export_for_template($renderer));
         return $this->content;
     }
 }
