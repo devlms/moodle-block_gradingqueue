@@ -16,6 +16,7 @@
 
 namespace block_gradingqueue\local;
 
+#[\PHPUnit\Framework\Attributes\CoversClass(\block_gradingqueue\local\queue::class)]
 /**
  * Tests for the grading queue.
  *

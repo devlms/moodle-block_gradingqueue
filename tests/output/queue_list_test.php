@@ -16,6 +16,7 @@
 
 namespace block_gradingqueue\output;
 
+#[\PHPUnit\Framework\Attributes\CoversClass(\block_gradingqueue\output\queue_list::class)]
 /**
  * Tests for the data behind the block's list.
  *

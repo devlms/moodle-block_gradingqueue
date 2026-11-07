@@ -16,6 +16,7 @@
 
 namespace block_gradingqueue;
 
+#[\PHPUnit\Framework\Attributes\CoversClass(\block_gradingqueue::class)]
 /**
  * Tests for the block class.
  *
