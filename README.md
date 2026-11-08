@@ -7,6 +7,7 @@
 [![PHP](https://img.shields.io/badge/PHP-8.1%20to%208.4-777bb4)](https://www.php.net/supported-versions.php)
 [![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3-blue)](LICENSE)
 [![Maturity](https://img.shields.io/badge/maturity-stable-green)](version.php)
+[![Sponsor](https://img.shields.io/badge/sponsor-this%20plugin-2438ff)](https://devlms.com/sponsors/?plugin=block_gradingqueue)
 
 One list of everything waiting for you to grade, across all your Moodle courses, oldest first. Put it on the Dashboard and stop opening every course to check.
 
@@ -38,6 +39,12 @@ PHPUnit covers ordering, graded work leaving the queue and returning on resubmis
 ## Who made it
 
 [DevLMS](https://devlms.com) builds custom Moodle plugins. Want forums, workshops or your own activity types in the list, or a grading workload report for managers? [Get a quote](https://devlms.com/#quote).
+
+## Sponsors
+
+<!-- sponsors:start -->
+No sponsors yet. [Sponsor this plugin](https://devlms.com/sponsors/?plugin=block_gradingqueue): your name or logo, with a link to your site, goes here and on [devlms.com/sponsors](https://devlms.com/sponsors/).
+<!-- sponsors:end -->
 
 ## License
 
