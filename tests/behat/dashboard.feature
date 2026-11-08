@@ -32,6 +32,8 @@ Feature: See everything waiting for grading on the Dashboard
     And I should see "1 waiting" in the "Needs grading" "block"
     And I should see "Biology" in the "Needs grading" "block"
     And I should see "1 to grade" in the "Needs grading" "block"
+    # Checked with editing off: Moodle 5.0's own block editing controls fail the touch target rule.
+    And I turn editing mode off
     And the page should meet accessibility standards
     When I click on "Essay 1" "link" in the "Needs grading" "block"
     Then I should see "Sam Student"
