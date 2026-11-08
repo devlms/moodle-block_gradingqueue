@@ -28,6 +28,8 @@ use stdClass;
  * waiting for manual grading.
  *
  * Counts are per activity. Group restrictions are applied on the grading page the link opens.
+ * Courses where the user cannot grade at course level are skipped, so a role given only on one
+ * activity is not seen; that keeps the Dashboard fast for students, who are most users.
  *
  * @package    block_gradingqueue
  * @copyright  2026 DevLMS <contact@devlms.com>
@@ -43,8 +45,11 @@ final class queue {
      */
     public static function for_user(int $userid, int $courseid = 0): array {
         $cms = ['assign' => [], 'quiz' => []];
-        foreach (enrol_get_users_courses($userid, true) as $course) {
-            if ($courseid && (int) $course->id !== $courseid) {
+        // On a course page, graders who are not enrolled (managers, admins) see that course too.
+        $courses = $courseid ? [get_course($courseid)] : enrol_get_users_courses($userid, true);
+        $capabilities = ['mod/assign:grade', 'mod/quiz:grade'];
+        foreach ($courses as $course) {
+            if (!has_any_capability($capabilities, \context_course::instance($course->id), $userid)) {
                 continue;
             }
             $modinfo = get_fast_modinfo($course, $userid);
@@ -92,7 +97,8 @@ final class queue {
             return [];
         }
         [$insql, $params] = $DB->get_in_or_equal($ids, SQL_PARAMS_NAMED);
-        $params += ['submitted' => 'submitted', 'active' => ENROL_USER_ACTIVE, 'enabled' => ENROL_INSTANCE_ENABLED];
+        $params += ['submitted' => 'submitted', 'active' => ENROL_USER_ACTIVE, 'enabled' => ENROL_INSTANCE_ENABLED,
+            'now1' => time(), 'now2' => time()];
         return array_values($DB->get_records_sql(
             "SELECT s.assignment AS instance, COUNT(s.id) AS total, MIN(s.timemodified) AS oldest
                FROM {assign_submission} s
@@ -100,6 +106,7 @@ final class queue {
           LEFT JOIN {assign_grades} g ON g.assignment = s.assignment AND g.userid = s.userid
                                      AND g.attemptnumber = s.attemptnumber
               WHERE s.assignment $insql
+                AND a.teamsubmission = 0
                 AND s.latest = 1
                 AND s.userid > 0
                 AND s.status = :submitted
@@ -109,7 +116,8 @@ final class queue {
                               FROM {user_enrolments} ue
                               JOIN {enrol} e ON e.id = ue.enrolid
                              WHERE e.courseid = a.course AND ue.userid = s.userid
-                               AND ue.status = :active AND e.status = :enabled)
+                               AND ue.status = :active AND e.status = :enabled
+                               AND ue.timestart <= :now1 AND (ue.timeend = 0 OR ue.timeend > :now2))
            GROUP BY s.assignment",
             $params
         ));
@@ -127,14 +135,22 @@ final class queue {
             return [];
         }
         [$insql, $params] = $DB->get_in_or_equal($ids, SQL_PARAMS_NAMED);
-        $params['finished'] = 'finished';
+        $params += ['finished' => 'finished', 'active' => ENROL_USER_ACTIVE, 'enabled' => ENROL_INSTANCE_ENABLED,
+            'now1' => time(), 'now2' => time()];
         return array_values($DB->get_records_sql(
             "SELECT qa.quiz AS instance, COUNT(qa.id) AS total, MIN(qa.timefinish) AS oldest
                FROM {quiz_attempts} qa
+               JOIN {quiz} q ON q.id = qa.quiz
               WHERE qa.quiz $insql
                 AND qa.state = :finished
                 AND qa.preview = 0
                 AND qa.sumgrades IS NULL
+                AND EXISTS (SELECT 1
+                              FROM {user_enrolments} ue
+                              JOIN {enrol} e ON e.id = ue.enrolid
+                             WHERE e.courseid = q.course AND ue.userid = qa.userid
+                               AND ue.status = :active AND e.status = :enabled
+                               AND ue.timestart <= :now1 AND (ue.timeend = 0 OR ue.timeend > :now2))
            GROUP BY qa.quiz",
             $params
         ));
@@ -152,10 +168,15 @@ final class queue {
     private static function item(\cm_info $cm, int $count, int $oldest, moodle_url $url): stdClass {
         return (object) [
             'courseid' => (int) $cm->course,
-            'coursename' => format_string($cm->get_course()->fullname, true, ['context' => $cm->context->get_course_context()]),
+            // Unescaped here: the template escapes once.
+            'coursename' => format_string(
+                $cm->get_course()->fullname,
+                true,
+                ['context' => $cm->context->get_course_context(), 'escape' => false]
+            ),
             'cmid' => (int) $cm->id,
             'modname' => $cm->modname,
-            'name' => $cm->get_formatted_name(),
+            'name' => $cm->get_formatted_name(['escape' => false]),
             'url' => $url->out(false),
             'count' => $count,
             'oldest' => $oldest,

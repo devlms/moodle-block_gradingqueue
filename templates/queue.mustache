@@ -29,7 +29,7 @@
     }
 }}
 {{#hasrows}}
-<p class="block-gradingqueue-summary fw-bold mb-2">{{summary}}</p>
+<p class="block-gradingqueue-summary mb-2">{{summary}}</p>
 <ul class="list-unstyled mb-0 block-gradingqueue-list">
     {{#rows}}
     <li class="block-gradingqueue-item">
@@ -37,7 +37,7 @@
         <div class="block-gradingqueue-main">
             <a href="{{url}}" class="block-gradingqueue-name">{{name}}</a>
             <div class="small text-muted">
-                {{#showcourse}}<span>{{coursename}}</span> &middot; {{/showcourse}}<span class="{{#overdue}}block-gradingqueue-overdue{{/overdue}}" title="{{since}}">{{age}}</span>
+                {{#showcourse}}<span>{{coursename}}</span> &middot; {{/showcourse}}<span class="{{#overdue}}block-gradingqueue-overdue{{/overdue}}" title="{{since}}">{{age}}{{#overdue}}<span class="visually-hidden"> ({{#str}}overdue, block_gradingqueue{{/str}})</span>{{/overdue}}</span>
             </div>
         </div>
         <span class="badge rounded-pill bg-primary text-white block-gradingqueue-count">{{waiting}}</span>

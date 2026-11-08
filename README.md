@@ -6,7 +6,7 @@
 [![Moodle](https://img.shields.io/badge/Moodle-4.5%20to%205.3-f98012)](https://moodledev.io/general/releases)
 [![PHP](https://img.shields.io/badge/PHP-8.1%20to%208.4-777bb4)](https://www.php.net/supported-versions.php)
 [![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3-blue)](LICENSE)
-[![Maturity](https://img.shields.io/badge/maturity-alpha-orange)](version.php)
+[![Maturity](https://img.shields.io/badge/maturity-stable-green)](version.php)
 
 One list of everything waiting for you to grade, across all your Moodle courses, oldest first. Put it on the Dashboard and stop opening every course to check.
 
@@ -14,7 +14,7 @@ One list of everything waiting for you to grade, across all your Moodle courses,
 
 | Work | Counted when |
 | --- | --- |
-| Assignment submissions | The latest submission is submitted and has no grade, or was changed after it was graded. The same rule Moodle's assignment uses for its own count. Only students with an active enrolment. |
+| Assignment submissions | The latest submission is submitted and has no grade, or was changed after it was graded, as in Moodle's own count. Only students whose enrolment is active today. Group submission assignments are left out, as Moodle's own count does. |
 | Quiz attempts | The attempt is finished but has no total yet, which means a question such as an essay is waiting for manual grading. |
 
 Each line shows the activity, how many are waiting, the course, and how long the oldest has waited. The link opens the grading page for that activity. On the Dashboard it covers every course you can grade in; added to a course page, it shows that course only.

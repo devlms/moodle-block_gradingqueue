@@ -24,7 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['activity'] = 'Activity';
 $string['age:day'] = 'Oldest 1 day';
 $string['age:days'] = 'Oldest {$a} days';
 $string['age:hour'] = 'Oldest 1 hour';
